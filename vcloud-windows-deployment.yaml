@@ -33,13 +33,6 @@ inputs:
       Password for connecting to agent VM's
     type: string
 
-  edge_gateway:
-    type: string
-    default: gateway
-    description: >
-      For 'ondemand' service type, the value of edge_gateway
-      is always 'gateway'
-
 node_types:
 
   windows.nodes.Server:
