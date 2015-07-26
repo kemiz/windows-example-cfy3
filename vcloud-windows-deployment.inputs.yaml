@@ -1,0 +1,7 @@
+catalog: 'giga'
+template: 'swwindows'
+server_memory: 1024
+server_cpu: 1
+username: 'Admin'
+password: 'admin'
+edge_gateway: 'M966854774-4471'

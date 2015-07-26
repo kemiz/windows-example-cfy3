@@ -1,0 +1,67 @@
+tosca_definitions_version: cloudify_dsl_1_0
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.2/types.yaml
+  - https://raw.githubusercontent.com/kemiz/tosca-vcloud-plugin/master/plugin.yaml
+
+inputs:
+
+  catalog:
+    type: string
+
+  template:
+    type: string
+
+  server_cpu:
+    default: 2
+    description: >
+      cpu count for each server
+
+  server_memory:
+    default: 4096
+    description: >
+      memory amount for each server
+
+  username:
+    description: >
+      User for connecting to agent VM's
+    type: string
+    default: Admin
+
+  password:
+    description: >
+      Password for connecting to agent VM's
+    type: string
+
+  edge_gateway:
+    type: string
+    default: gateway
+    description: >
+      For 'ondemand' service type, the value of edge_gateway
+      is always 'gateway'
+
+node_types:
+
+  windows.nodes.Server:
+    derived_from: cloudify.vcloud.nodes.WindowsServer
+    properties:
+      cloudify_agent:
+        default:
+          user: { get_input: username }
+          password: { get_input: password }
+      server:
+        default:
+          name: windows_server
+          catalog: { get_input: catalog }
+          template: { get_input: template }
+          hardware:
+            cpu: { get_input: server_cpu }
+            memory: { get_input: server_memory }
+          guest_customization:
+              computer_name: windows_server
+              
+node_templates:
+
+  windows_host:
+    type: windows.nodes.Server
+
