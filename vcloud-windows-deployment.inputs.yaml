@@ -1,5 +1,5 @@
 catalog: 'giga'
-template: 'swwindows'
+template: 'newwin'
 server_memory: 1024
 server_cpu: 1
 username: 'Admin'

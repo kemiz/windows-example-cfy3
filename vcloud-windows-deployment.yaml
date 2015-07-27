@@ -8,6 +8,7 @@ inputs:
 
   catalog:
     type: string
+    default: 'giga'
 
   template:
     type: string
@@ -26,20 +27,21 @@ inputs:
     description: >
       User for connecting to agent VM's
     type: string
-    default: Admin
+    default: 'Admin'
 
   password:
     description: >
       Password for connecting to agent VM's
     type: string
+    default: '123'
 
-  edge_gateway:
+<<<<<<< HEAD
+  server_name:
     type: string
-    default: gateway
-    description: >
-      For 'ondemand' service type, the value of edge_gateway
-      is always 'gateway'
+    default: 'windows-server'
 
+=======
+>>>>>>> origin/3.2
 node_types:
 
   windows.nodes.Server:
@@ -51,15 +53,28 @@ node_types:
           password: { get_input: password }
       server:
         default:
-          name: windows_server
+          name: { get_input: server_name }
+          userdata: |
+            #ps1_sysnative
+            winrm quickconfig -q
+            winrm set winrm/config/winrs '@{MaxMemoryPerShellMB="300"}'
+            winrm set winrm/config '@{MaxTimeoutms="1800000"}'
+            winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+            winrm set winrm/config/service/auth '@{Basic="true"}'
+            &netsh advfirewall firewall add rule name="WinRM 5985" protocol=TCP dir=in localport=5985 action=allow
+            &netsh advfirewall firewall add rule name="WinRM 5986" protocol=TCP dir=in localport=5986 action=allow
+
+            msiexec /i https://www.python.org/ftp/python/2.7.6/python-2.7.6.msi TARGETDIR=C:\Python27 ALLUSERS=1 /qn
+            
           catalog: { get_input: catalog }
           template: { get_input: template }
           hardware:
             cpu: { get_input: server_cpu }
             memory: { get_input: server_memory }
           guest_customization:
-              computer_name: windows_server
-              
+              computer_name: { get_input: server_name }
+              admin_password: { get_input: password }    
+
 node_templates:
 
   windows_host:
