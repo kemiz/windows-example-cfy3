@@ -35,13 +35,10 @@ inputs:
     type: string
     default: '123'
 
-<<<<<<< HEAD
   server_name:
     type: string
     default: 'windows-server'
 
-=======
->>>>>>> origin/3.2
 node_types:
 
   windows.nodes.Server:
